@@ -1,4 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Villa_api;
+using Villa_api.Data;
 using Villa_api.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Host.UseSerilog();
 
 // Add services to the container.
-
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddControllers(option =>
 {
     //option.ReturnHttpNotAcceptable=true;
